@@ -1,0 +1,8 @@
+stable-baselines3
+gymnasium
+opencv-python-headless
+mss
+pyautogui
+numpy
+# todo: just for logging or really needed?
+tensorboard

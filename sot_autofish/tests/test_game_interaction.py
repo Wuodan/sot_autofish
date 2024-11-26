@@ -19,6 +19,8 @@ def unequip(game: GameInteraction):
 
 
 # try:
+GLOBAL_LOG_LEVEL='INFO'
+
 my_game = GameInteraction(game_title="Sea of Thieves")
 time.sleep(5)
 equip_fishing_rod(my_game)

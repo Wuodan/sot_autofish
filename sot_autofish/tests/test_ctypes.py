@@ -77,36 +77,40 @@ def release_key(scancode):
     x = Input(ctypes.c_ulong(1), ii_)
     USER32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
-
-def left_click():
-    """Perform a left mouse click."""
+def mouse_click_down(button_down):
+    """Perform a generic mouse button down action."""
     extra = ctypes.c_ulong(0)
     ii_ = InputI()
-    ii_.mi = MouseInput(0, 0, 0, MOUSEEVENTF_LEFTDOWN, 0, ctypes.pointer(extra))
-    x = Input(ctypes.c_ulong(0), ii_)
-    USER32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
-
-    ii_.mi = MouseInput(0, 0, 0, MOUSEEVENTF_LEFTUP, 0, ctypes.pointer(extra))
-    x = Input(ctypes.c_ulong(0), ii_)
-    USER32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
-
-
-def right_click():
-    """Perform a right mouse click."""
-    extra = ctypes.c_ulong(0)
-    ii_ = InputI()
-
-    # Right button down
-    ii_.mi = MouseInput(dx=0, dy=0, mouseData=0, dwFlags=MOUSEEVENTF_RIGHTDOWN, time=0,
-                        dwExtraInfo=ctypes.pointer(extra))
+    ii_.mi = MouseInput(dx=0, dy=0, mouseData=0, dwFlags=button_down, time=0, dwExtraInfo=ctypes.pointer(extra))
     x = Input(type=ctypes.c_ulong(0), ii=ii_)
     USER32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
-    # Right button up
-    ii_.mi = MouseInput(dx=0, dy=0, mouseData=0, dwFlags=MOUSEEVENTF_RIGHTUP, time=0,
-                        dwExtraInfo=ctypes.pointer(extra))
+def mouse_click_up(button_up):
+    """Perform a generic mouse button up action."""
+    extra = ctypes.c_ulong(0)
+    ii_ = InputI()
+    ii_.mi = MouseInput(dx=0, dy=0, mouseData=0, dwFlags=button_up, time=0, dwExtraInfo=ctypes.pointer(extra))
     x = Input(type=ctypes.c_ulong(0), ii=ii_)
     USER32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
+
+
+def left_click_down():
+    """Perform a left mouse button down action."""
+    mouse_click_down(MOUSEEVENTF_LEFTDOWN)
+
+def left_click_up():
+    """Perform a left mouse button up action."""
+    mouse_click_up(MOUSEEVENTF_LEFTUP)
+
+def right_click_down():
+    """Perform a right mouse button down action."""
+    mouse_click_down(MOUSEEVENTF_RIGHTDOWN)
+
+def right_click_up():
+    """Perform a right mouse button up action."""
+    mouse_click_up(MOUSEEVENTF_RIGHTUP)
+
+
 
 
 def find_window(title):
@@ -118,17 +122,25 @@ if __name__ == "__main__":
     hwnd = find_window("Sea of Thieves")
     USER32.SetForegroundWindow(hwnd)
     time.sleep(2)  # Give time to switch to the game window
+
     # Example: Send 'F' key
     press_key(KEY_MAP['f'])
     time.sleep(0.1)
     release_key(KEY_MAP['f'])
     time.sleep(2)
 
-    # Example: Send left click
-    left_click()
-    print("sent left click")
+    print("Simulating left-click down in 2 seconds...")
     time.sleep(2)
+    left_click_down()
 
-    # Example: Send right click
-    right_click()
-    print("sent right click")
+    print("Simulating left-click up in 2 seconds...")
+    time.sleep(2)
+    left_click_up()
+
+    print("Simulating right-click down in 2 seconds...")
+    time.sleep(2)
+    right_click_down()
+
+    print("Simulating right-click up in 2 seconds...")
+    time.sleep(2)
+    right_click_up()

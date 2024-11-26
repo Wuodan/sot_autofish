@@ -6,3 +6,6 @@ pyautogui
 numpy
 # todo: just for logging or really needed?
 tensorboard
+
+# for tests only
+pywin32
